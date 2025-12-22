@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap");
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f3f4f6;
+    color: #1e3a8a;
+    margin: 0;
+}
+
+.navbar {
+    @apply fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-md flex items-center justify-between px-6 py-4;
+}
+.navbar a {
+    @apply font-semibold text-gray-800 hover:text-gray-900 transition;
+}
+.navbar .menu-icon {
+    @apply text-2xl text-gray-800 cursor-pointer;
+}
+
+.hero-search {
+    @apply bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto -mt-12 relative z-10;
+}
+.hero-search input {
+    @apply border border-gray-300 rounded-lg px-4 py-3 w-full md:w-72 mb-4 md:mb-0;
+}
+.hero-search button {
+    @apply bg-[#FF5000] hover:bg-[#e04b00] text-white font-bold rounded-lg px-6 py-3 transition duration-300;
+}
+
+.btn {
+    @apply px-6 py-2 rounded-lg font-bold text-white text-center transition duration-300;
+    font-family: "Inter", sans-serif;
+}
+.btn-primary {
+    @apply bg-[#FF5000] hover:bg-[#e04b00];
+}
+.btn-orange {
+    @apply bg-[#FF5000] hover:bg-[#e04b00];
+}
+
+.btn-black-orange {
+    @apply bg-gray-800 text-orange-500 font-bold text-center rounded-lg px-5 py-3 hover:bg-gray-700 transition;
+}
+
+.card {
+    @apply rounded-xl overflow-hidden shadow-md transition transform hover:-translate-y-2 hover:shadow-xl;
+    background: linear-gradient(135deg, #000000 0%, #ffffff 100%);
+}
+.card img {
+    @apply w-full h-48 object-cover;
+}
+.card-body {
+    @apply p-4;
+}
+.card-body h2 {
+    @apply text-lg font-bold mb-2 text-white;
+}
+.card-body p {
+    @apply text-gray-200 mb-2;
+}
+
+.grid-cars {
+    @apply grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
+.date-box {
+    @apply bg-white border border-gray-300 rounded-lg shadow-sm;
+}
+
+.date-box input[type="date"] {
+    @apply w-full px-3 py-2 text-black bg-transparent outline-none;
+}
+
+.footer {
+    @apply bg-blue-600 text-white py-12 text-center;
+}
+.footer h2 {
+    @apply text-3xl font-bold mb-4;
+}
+.footer p {
+    @apply text-white/80;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.6s ease-in-out forwards;
+}
+.animate-slideUp {
+    animation: slideUp 0.8s ease-out forwards;
+}
