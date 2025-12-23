@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\Admin\AdminCarController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
@@ -19,24 +22,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
+Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 
-    Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/confirmation', [CartController::class, 'confirmation'])->name('cart.confirmation');
+Route::post('/cart/store', [CartController::class, 'storeOrder'])->name('cart.storeOrder');
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/cars/create', [CarController::class, 'create'])->name('cars.create');
-        Route::post('/cars', [CarController::class, 'store'])->name('cars.store');
-        Route::get('/cars/{car}/edit', [CarController::class, 'edit'])->name('cars.edit');
-        Route::put('/cars/{car}', [CarController::class, 'update'])->name('cars.update');
-        Route::delete('/cars/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
-    });
+Route::get('/testimoni', [TestimoniController::class, 'index'])->name('testimoni.index');
+Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
 
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
-    Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/cart/confirmation', [CartController::class, 'confirmation'])->name('cart.confirmation');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('cars', AdminCarController::class);
+    Route::get('carts', [AdminCartController::class, 'index'])->name('carts.index');
+    Route::get('carts/{id}', [AdminCartController::class, 'show'])->name('carts.show');
+    Route::delete('carts/{id}', [AdminCartController::class, 'destroy'])->name('carts.destroy');
+
+    Route::get('testimoni', [TestimoniController::class, 'adminIndex'])->name('testimoni.index');
+    Route::delete('testimoni/{testimoni}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
 });
-
-Route::view('/contact', 'components.contact')->name('contact');

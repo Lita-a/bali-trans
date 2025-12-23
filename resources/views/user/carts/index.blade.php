@@ -4,12 +4,49 @@
 <div class="container mx-auto p-6 space-y-6">
 
     @if(count($cart))
+    <div class="card p-6 mb-6 bg-white shadow-md rounded-xl">
+        <h2 class="text-2xl md:text-3xl font-extrabold mb-6 text-orange-600 drop-shadow-md">
+            Data Penyewa
+        </h2>
+        <form id="customer-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="flex flex-col">
+                <label class="text-orange-600 font-semibold mb-1">
+                    Nama <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="customer_name" placeholder="Masukkan nama"
+                       value="{{ old('customer_name') }}"
+                       class="w-full px-3 py-2 border-2 border-orange-500 rounded-md bg-white text-black focus:bg-white focus:ring-1 focus:ring-orange-500 focus:outline-none"
+                       required>
+            </div>
+            <div class="flex flex-col">
+                <label class="text-orange-600 font-semibold mb-1">
+                    Email <span class="text-red-500">*</span>
+                </label>
+                <input type="email" name="customer_email" placeholder="Masukkan email"
+                       value="{{ old('customer_email') }}"
+                       class="w-full px-3 py-2 border-2 border-orange-500 rounded-md bg-white text-black focus:bg-white focus:ring-1 focus:ring-orange-500 focus:outline-none"
+                       required>
+            </div>
+            <div class="flex flex-col">
+                <label class="text-orange-600 font-semibold mb-1">
+                    No Telepon <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="customer_phone" placeholder="Masukkan nomor telepon"
+                       value="{{ old('customer_phone') }}"
+                       class="w-full px-3 py-2 border-2 border-orange-500 rounded-md bg-white text-black focus:bg-white focus:ring-1 focus:ring-orange-500 focus:outline-none"
+                       required>
+            </div>
+        </form>
+    </div>
+    @endif
+
+    @if(count($cart))
     <div class="flex justify-between items-center">
         <a href="{{ url('/cars') }}" class="btn btn-orange px-6 py-3 rounded-lg shadow">
             Tambah Mobil Lain
         </a>
 
-        <form id="confirm-form" action="{{ route('cart.confirmation') }}" method="POST">
+        <form id="confirm-form" action="{{ route('cart.storeOrder') }}" method="POST">
             @csrf
             <button id="confirm-btn" class="btn btn-orange px-6 py-3 rounded-lg shadow opacity-50 cursor-not-allowed" disabled>
                 Konfirmasi & Bayar
@@ -19,11 +56,9 @@
     @endif
 
     @if(count($cart))
-
     <div class="grid grid-car gap-6 md:grid-cols-2 lg:grid-cols-3">
-
         @foreach($cart as $id => $item)
-        <div class="card cart-item p-5"
+        <div class="card cart-item p-5 bg-white shadow-md rounded-xl"
             data-id="{{ $id }}"
             data-base-price="{{ $item['price'] }}"
             data-driver-price="{{ $item['driver_price'] }}">
@@ -39,19 +74,24 @@
             </p>
 
             <div class="flex gap-2 mt-4">
-                <input type="date"
-                    min="{{ now()->format('Y-m-d') }}"
-                    value="{{ $item['start_date'] }}"
-                    class="start-date w-1/2 px-3 py-2 rounded-md border-2 border-black bg-white text-black">
-
-                <input type="date"
-                    value="{{ $item['end_date'] }}"
-                    class="end-date w-1/2 px-3 py-2 rounded-md border-2 border-black bg-white text-black">
+                <div class="flex-1 flex flex-col">
+                    <label class="text-orange-600 font-semibold mb-1">Mulai Sewa</label>
+                    <input type="date"
+                           min="{{ now()->format('Y-m-d') }}"
+                           value="{{ old("cart.$id.start_date", $item['start_date']) }}"
+                           class="start-date w-full px-3 py-2 rounded-md border-2 border-orange-500 bg-white text-black focus:bg-white focus:ring-1 focus:ring-orange-500 focus:outline-none">
+                </div>
+                <div class="flex-1 flex flex-col">
+                    <label class="text-orange-600 font-semibold mb-1">Akhir Sewa</label>
+                    <input type="date"
+                           value="{{ old("cart.$id.end_date", $item['end_date']) }}"
+                           class="end-date w-full px-3 py-2 rounded-md border-2 border-orange-500 bg-white text-black focus:bg-white focus:ring-1 focus:ring-orange-500 focus:outline-none">
+                </div>
             </div>
 
             <label class="flex items-center mt-4 text-sm font-semibold text-black">
                 <input type="checkbox" class="with-driver mr-2"
-                    {{ $item['with_driver'] ? 'checked' : '' }}>
+                    {{ old("cart.$id.with_driver", $item['with_driver']) ? 'checked' : '' }}>
                 Dengan Driver
             </label>
 
@@ -64,10 +104,9 @@
 
         </div>
         @endforeach
-
     </div>
 
-    <div class="card p-6 text-right">
+    <div class="card p-6 text-right bg-white shadow-md rounded-xl">
         <h2 class="text-2xl font-bold text-black">
             Total: Rp <span id="total-cart">{{ number_format($totalPrice) }}</span>
         </h2>
@@ -76,7 +115,7 @@
     @else
 
     <div class="flex justify-center items-center min-h-75">
-        <div class="card p-10 text-center max-w-md">
+        <div class="card p-10 text-center max-w-md bg-white shadow-md rounded-xl">
             <h2 class="text-2xl font-bold text-black mb-3">
                 Keranjang Kosong
             </h2>
@@ -103,6 +142,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const end = item.querySelector('.end-date').value
             if (!start || !end || new Date(end) < new Date(start)) valid = false
         })
+
+        const customerForm = document.getElementById('customer-form');
+        if(customerForm){
+            ['customer_name','customer_email','customer_phone'].forEach(name => {
+                const field = customerForm.querySelector(`[name="${name}"]`);
+                if(!field || !field.value.trim()) valid = false;
+            })
+        }
+
         return valid
     }
 
@@ -153,6 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateConfirm()
         }))
 
+    document.querySelectorAll('#customer-form input').forEach(el => el.addEventListener('input', updateConfirm))
+
     updateTotal()
     updateConfirm()
 
@@ -168,21 +218,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.cart-item').forEach(item => {
                 const id = item.dataset.id
-
                 ;['start_date','end_date','with_driver'].forEach(field => {
                     const input = document.createElement('input')
                     input.type = 'hidden'
                     input.name = `cart[${id}][${field}]`
-
                     if (field === 'with_driver') {
                         input.value = item.querySelector('.with-driver').checked ? 1 : 0
                     } else {
                         input.value = item.querySelector(`.${field.replace('_','-')}`).value
                     }
-
                     form.appendChild(input)
                 })
             })
+
+            const customerForm = document.getElementById('customer-form');
+            if (customerForm) {
+                new FormData(customerForm).forEach((v,k) => {
+                    const input = document.createElement('input')
+                    input.type = 'hidden'
+                    input.name = k
+                    input.value = v
+                    form.appendChild(input)
+                })
+            }
         })
     }
 })

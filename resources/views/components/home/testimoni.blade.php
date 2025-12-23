@@ -9,10 +9,11 @@
             Pengalaman pelanggan yang telah menggunakan layanan kami
         </p>
 
-        @auth
         <div class="max-w-2xl mx-auto mb-12">
             <form id="testimonialForm" action="{{ route('testimoni.store') }}" method="POST" class="space-y-4">
                 @csrf
+                <input type="text" name="user_name" placeholder="Nama Anda" required class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
+
                 <div class="flex justify-center gap-2 mb-2">
                     @for($i=1; $i<=5; $i++)
                     <svg data-value="{{ $i }}" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 cursor-pointer text-gray-400 hover:text-orange-500 transition transform hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
@@ -35,7 +36,6 @@
                 </div>
             </form>
         </div>
-        @endauth
 
         <div class="relative group">
             <div id="testimonial-carousel" class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6">
@@ -46,7 +46,7 @@
                                         0 10px 25px rgba(0,0,0,0.4);">
                     <div class="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-orange-500 flex items-center justify-center bg-black shadow-lg">
                         <span class="text-orange-500 font-bold text-xl">
-                            {{ strtoupper(substr($testimoni->user->name, 0, 1)) }}
+                            {{ strtoupper(substr($testimoni->user_name, 0, 1)) }}
                         </span>
                     </div>
 
@@ -59,7 +59,7 @@
                     </div>
 
                     <p class="text-gray-200 mb-4 italic leading-relaxed">“{{ $testimoni->message }}”</p>
-                    <h3 class="font-semibold text-orange-500 text-lg">{{ $testimoni->user->name }}</h3>
+                    <h3 class="font-semibold text-orange-500 text-lg">{{ $testimoni->user_name }}</h3>
                     <span class="text-xs text-gray-400">Pelanggan Terverifikasi</span>
                 </div>
                 @endforeach

@@ -18,16 +18,23 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string'
+            'password' => 'required|string',
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.'
+            'email' => 'Email atau password salah.',
         ]);
     }
 

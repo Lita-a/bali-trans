@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Car;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class CartController extends Controller
 {
@@ -47,10 +49,9 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $totalPrice = $this->calculateCart($cart);
-
         session(['cart' => $cart]);
 
-        return view('cart.index', compact('cart', 'totalPrice'));
+        return view('user.carts.index', compact('cart', 'totalPrice'));
     }
 
     public function add($id)
@@ -75,7 +76,6 @@ class CartController extends Controller
         }
 
         session(['cart' => $cart]);
-
         return redirect()->route('cart.index');
     }
 
@@ -83,16 +83,13 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        if (!isset($cart[$id])) {
-            return back();
-        }
+        if (!isset($cart[$id])) return back();
 
         $cart[$id]['start_date'] = $request->start_date;
-        $cart[$id]['end_date']   = $request->end_date;
+        $cart[$id]['end_date'] = $request->end_date;
         $cart[$id]['with_driver'] = $request->with_driver ?? 0;
 
         session(['cart' => $cart]);
-
         return back();
     }
 
@@ -120,7 +117,65 @@ class CartController extends Controller
         }
 
         $totalPrice = $this->calculateCart($cart);
+        session(['cart' => $cart]);
 
-        return view('cart.confirmation', compact('cart', 'totalPrice'));
+        return view('user.carts.confirmation', [
+            'cart' => $cart,
+            'totalPrice' => $totalPrice
+        ]);
+    }
+
+    public function storeOrder(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        if (!$cart) return redirect()->route('cart.index');
+
+        if ($request->has('cart')) {
+            foreach ($request->cart as $id => $data) {
+                if (isset($cart[$id])) {
+                    $cart[$id]['start_date']  = $data['start_date'];
+                    $cart[$id]['end_date']    = $data['end_date'];
+                    $cart[$id]['with_driver'] = $data['with_driver'];
+                }
+            }
+        }
+
+        $totalPrice = $this->calculateCart($cart);
+
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'customer_email' => 'nullable|email|max:255',
+            'customer_phone' => 'nullable|string|max:20',
+        ]);
+
+        $order = Order::create([
+            'customer_name' => $request->customer_name,
+            'customer_email' => $request->customer_email,
+            'customer_phone' => $request->customer_phone,
+            'total_price' => $totalPrice,
+        ]);
+
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'car_id' => $item['id'],
+                'car_name' => $item['name'],
+                'car_image' => $item['image'],
+                'price' => $item['price'],
+                'driver_price' => $item['driver_price'],
+                'with_driver' => $item['with_driver'],
+                'start_date' => $item['start_date'],
+                'end_date' => $item['end_date'],
+                'days' => $item['days'],
+                'subtotal' => $item['subtotal'],
+            ]);
+        }
+
+        session()->forget('cart');
+
+        return view('user.carts.confirmation', [
+            'totalPrice' => $totalPrice,
+            'confirmationCart' => $cart
+        ]);
     }
 }

@@ -12,26 +12,26 @@ class CarSeeder extends Seeder
         Car::create([
             'name' => 'Toyota Avanza',
             'price' => 350000,
-            'img' => '/images/avanza.jpg',
+            'image' => '/images/avanza.jpg',
             'desc' => 'Mobil MPV 7-seater, nyaman untuk keluarga.'
         ]);
         Car::create([
             'name' => 'Toyota Innova',
             'price' => 500000,
-            'img' => '/images/innova.jpg',
+            'image' => '/images/innova.jpg',
             'desc' => 'MPV menengah, nyaman dan luas, cocok untuk perjalanan wisata di Bali.'
         ]);
 
         Car::create([
             'name' => 'Toyota Fortuner',
             'price' => 650000,
-            'img' => '/images/fortuner.jpg',
+            'image' => '/images/fortuner.jpg',
             'desc' => 'SUV premium 7-seater, ideal untuk perjalanan jarak jauh dan medan beragam.'
         ]);
         Car::create([
             'name' => 'Honda CR-V',
             'price' => 600000,
-            'img' => '/images/crv.jpg',
+            'image' => '/images/crv.jpg',
             'desc' => 'SUV menengah, nyaman, irit bahan bakar, cocok untuk keluarga kecil.'
         ]);
     }

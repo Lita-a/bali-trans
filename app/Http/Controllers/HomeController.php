@@ -14,7 +14,7 @@ class HomeController extends Controller
         if ($popularCars->isEmpty()) {
             $popularCars = Car::limit(4)->get();
         }
-        $testimonis = Testimoni::with('user')->latest()->get();
+        $testimonis = Testimoni::latest()->get();
 
         return view('components.home', compact('popularCars', 'testimonis'));
     }

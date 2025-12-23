@@ -21,10 +21,14 @@ class Car extends Model
 
     public function getImageUrlAttribute(): string
     {
-        if ($this->image && file_exists(public_path('storage/' . $this->image))) {
-            return asset('storage/' . $this->image);
+        if ($this->image) {
+            if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+                return $this->image;
+            }
+            if (file_exists(public_path('storage/' . $this->image))) {
+                return asset('storage/' . $this->image);
+            }
         }
-
         return asset('images/no-car.png');
     }
 }
