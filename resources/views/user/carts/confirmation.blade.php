@@ -25,7 +25,16 @@
                 </div>
             @endif
 
-            <a href="{{ url('/cars') }}" class="btn-black-orange px-8 py-3 rounded-full text-lg font-semibold hover:shadow-lg transition">
+            @if(isset($invoicePath))
+                <a href="{{ asset($invoicePath) }}" 
+                   target="_blank" 
+                   class="btn-black-orange inline-block w-full sm:w-auto px-6 py-3 mb-4">
+                    Download Invoice
+                </a>
+            @endif
+
+            <a href="{{ url('/cars') }}" 
+               class="btn-black-orange inline-block w-full sm:w-auto px-6 py-3">
                 Kembali ke Koleksi Mobil
             </a>
         </div>
