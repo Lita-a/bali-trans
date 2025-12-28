@@ -10,13 +10,19 @@
         </p>
 
         <div class="max-w-2xl mx-auto mb-12">
+            @if(session('success'))
+            <div class="mb-4 text-green-600 font-semibold">
+                {{ session('success') }}
+            </div>
+            @endif
+
             <form id="testimonialForm" action="{{ route('testimoni.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <input type="text" name="user_name" placeholder="Nama Anda" required class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
 
                 <div class="flex justify-center gap-2 mb-2">
                     @for($i=1; $i<=5; $i++)
-                    <svg data-value="{{ $i }}" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 cursor-pointer text-gray-400 hover:text-orange-500 transition transform hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
+                    <svg data-value="{{ $i }}" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 cursor-pointer text-gray-400 hover:text-orange-500 transition transform hover:scale-110 rating-star" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.974c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.539-1.118l1.286-3.974a1 1 0 00-.364-1.118L2.05 9.401c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.974z"/>
                     </svg>
                     @endfor
@@ -29,6 +35,7 @@
                     rows="3"
                     placeholder="Tulis testimoni Anda..."
                     class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    required
                 ></textarea>
 
                 <div class="flex justify-end">
@@ -89,7 +96,7 @@
                 if(i <= index){
                     s.classList.remove('text-gray-400');
                     s.classList.add('text-orange-500');
-                }else{
+                } else {
                     s.classList.add('text-gray-400');
                     s.classList.remove('text-orange-500');
                 }
@@ -102,7 +109,10 @@
             e.preventDefault();
             toast.classList.remove('opacity-0');
             toast.classList.add('opacity-100');
-            setTimeout(()=>{ toast.classList.remove('opacity-100'); toast.classList.add('opacity-0'); },2500);
+            setTimeout(()=>{ 
+                toast.classList.remove('opacity-100'); 
+                toast.classList.add('opacity-0'); 
+            },2500);
         }
     });
 

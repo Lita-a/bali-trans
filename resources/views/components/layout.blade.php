@@ -41,46 +41,6 @@
                 @endif
             </a>
 
-            @auth
-                <div class="relative">
-
-                    <button id="user-toggle" type="button"
-                            class="flex items-center space-x-2 focus:outline-none">
-                        <div class="w-9 h-9 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                        </div>
-                        <svg id="user-arrow"
-                             class="w-4 h-4 text-gray-600 transition-transform duration-300"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-
-                    <div id="user-dropdown"
-                         class="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg hidden opacity-0 scale-95 transition origin-top-right">
-
-                        <div class="px-4 py-3 border-b">
-                            <p class="text-sm font-semibold text-gray-800">
-                                {{ auth()->user()->name }}
-                            </p>
-                        </div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button class="w-full text-left px-4 py-3 text-red-500 text-sm hover:bg-gray-100">
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            @else
-                <a href="{{ route('login') }}" class="text-black hover:text-orange-500 font-medium">
-                    Login
-                </a>
-                <a href="{{ route('register') }}" class="text-black hover:text-orange-500 font-medium">
-                    Register
-                </a>
-            @endauth
         </div>
 
         <button id="mobile-menu-button" class="md:hidden text-black focus:outline-none">
@@ -102,40 +62,14 @@
             Contact Us
         </a>
 
-        <a href="{{ route('cart.index') }}" class="block px-6 py-4 font-semibold text-orange-500">
+        <a href="{{ route('cart.index') }}"
+           class="block px-6 py-4 font-semibold text-orange-500">
             My Cart
+            @if(session('cart') && count(session('cart')) > 0)
+                ({{ count(session('cart')) }})
+            @endif
         </a>
 
-        @auth
-            <div class="px-6 py-4 border-t">
-                <div class="flex items-center space-x-3 mb-3">
-                    <div class="w-9 h-9 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    </div>
-                    <span class="font-medium text-gray-800">
-                        {{ auth()->user()->name }}
-                    </span>
-                </div>
-
-                <a href="#" class="block py-2 text-sm">
-                    My Orders
-                </a>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="text-red-500 text-sm mt-2">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        @else
-            <a href="{{ route('login') }}" class="block px-6 py-4 hover:bg-gray-100">
-                Login
-            </a>
-            <a href="{{ route('register') }}" class="block px-6 py-4 hover:bg-gray-100">
-                Register
-            </a>
-        @endauth
     </div>
 </nav>
 
@@ -176,29 +110,6 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('shadow-md')
     }
 })
-
-const userToggle = document.getElementById('user-toggle')
-const userDropdown = document.getElementById('user-dropdown')
-const userArrow = document.getElementById('user-arrow')
-
-if (userToggle) {
-    userToggle.addEventListener('click', (e) => {
-        e.stopPropagation()
-        userDropdown.classList.toggle('hidden')
-        setTimeout(() => {
-            userDropdown.classList.toggle('opacity-0')
-            userDropdown.classList.toggle('scale-95')
-        }, 10)
-        userArrow.classList.toggle('rotate-180')
-    })
-
-    document.addEventListener('click', () => {
-        if (!userDropdown.classList.contains('hidden')) {
-            userDropdown.classList.add('hidden', 'opacity-0', 'scale-95')
-            userArrow.classList.remove('rotate-180')
-        }
-    })
-}
 </script>
 
 </body>
