@@ -49,12 +49,16 @@
                             </div>
                         </td>
 
-                        <td class="px-2 py-1 text-center text-orange-600 font-semibold text-sm">Rp {{ number_format($item->price) }}</td>
+                        <td class="px-2 py-1 text-center text-orange-600 font-semibold text-sm">
+                            Rp {{ number_format($item->price) }}
+                        </td>
                         <td class="px-2 py-1 text-center text-sm">{{ $item->start_date }}</td>
                         <td class="px-2 py-1 text-center text-sm">{{ $item->end_date }}</td>
                         <td class="px-2 py-1 text-center text-sm">{{ $item->days }} hari</td>
                         <td class="px-2 py-1 text-center text-sm">{{ $item->with_driver ? 'Ya' : 'Tidak' }}</td>
-                        <td class="px-2 py-1 text-center text-orange-600 font-semibold text-sm">Rp {{ number_format($item->subtotal) }}</td>
+                        <td class="px-2 py-1 text-center text-orange-600 font-semibold text-sm">
+                            Rp {{ number_format($item->subtotal) }}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

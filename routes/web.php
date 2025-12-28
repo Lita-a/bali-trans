@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CarController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\Admin\AdminCarController;
 use App\Http\Controllers\Admin\AdminCartController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact/send', [ContactController::class, 'sendMessage'])->name('contact.send');
 
@@ -34,7 +34,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('cars', AdminCarController::class);
     Route::get('carts', [AdminCartController::class, 'index'])->name('carts.index');

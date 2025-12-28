@@ -36,7 +36,7 @@
                                class="btn-black-orange px-3 py-1 rounded text-sm">
                                Edit
                             </a>
-                            <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST">
+                            <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus mobil ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
@@ -51,8 +51,8 @@
             </table>
         </div>
         @else
-        <div class="flex justify-center items-center min-h-75">
-            <div class="card p-10 text-center max-w-md bg-white shadow-md rounded-xl">
+        <div class="flex justify-center items-center min-h-72">
+            <div class="bg-white shadow-md rounded-xl p-10 text-center max-w-md">
                 <h2 class="text-2xl font-bold text-gray-900 mb-3">
                     Belum ada mobil
                 </h2>

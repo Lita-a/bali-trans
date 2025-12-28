@@ -10,7 +10,7 @@
 
         @if($testimonis->count())
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white shadow-md rounded-lg">
+            <table class="min-w-full bg-white rounded-lg">
                 <thead class="bg-orange-600 text-white">
                     <tr>
                         <th class="px-4 py-2 text-center">#</th>
@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     @foreach($testimonis as $index => $testimoni)
-                    <tr class="border-b hover:bg-gray-50">
+                    <tr class="border-b">
                         <td class="px-4 py-2 text-center">{{ $index + 1 }}</td>
                         <td class="px-4 py-2 text-center">{{ $testimoni->user_name }}</td>
                         <td class="px-4 py-2">{{ $testimoni->message }}</td>
@@ -49,7 +49,7 @@
         </div>
         @else
         <div class="flex justify-center items-center min-h-75">
-            <div class="card p-10 text-center max-w-md bg-white shadow-md rounded-xl">
+            <div class="card p-10 text-center max-w-md bg-white rounded-xl">
                 <h2 class="text-2xl font-bold text-black mb-3">
                     Belum ada testimoni
                 </h2>

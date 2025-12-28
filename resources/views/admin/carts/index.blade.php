@@ -38,7 +38,7 @@
                                class="btn-black-orange px-4 py-1 rounded-lg text-sm flex-1 text-center">
                                 Detail
                             </a>
-                            <form action="{{ route('admin.carts.destroy', $order->id) }}" method="POST" class="flex-1">
+                            <form action="{{ route('admin.carts.destroy', $order->id) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus pemesanan ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
@@ -53,12 +53,12 @@
             </table>
         </div>
         @else
-        <div class="flex justify-center items-center min-h-75">
-            <div class="card p-10 text-center max-w-md bg-white shadow-md rounded-xl">
-                <h2 class="text-2xl font-bold text-black mb-3">
+        <div class="flex justify-center items-center min-h-72">
+            <div class="bg-white shadow-md rounded-xl p-10 text-center max-w-md">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">
                     Belum ada pemesanan
                 </h2>
-                <p class="text-black">
+                <p class="text-gray-600">
                     Tidak ada data pemesanan untuk ditampilkan saat ini.
                 </p>
             </div>

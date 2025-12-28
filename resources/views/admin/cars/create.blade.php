@@ -26,16 +26,12 @@
 
                 <div>
                     <label class="block mb-1 font-semibold text-gray-700">Gambar</label>
-                    <input type="file" name="image" class="w-full p-2 border rounded" id="imageInput" accept="image/*">
+                    <input type="file" name="image" id="imageInput" class="w-full p-2 border rounded" accept="image/*">
                 </div>
 
-                <div id="imagePreview" class="mt-4 hidden">
-                    <div class="bg-white rounded-xl shadow overflow-hidden w-64 mx-auto">
-                        <img id="previewImg" src="https://via.placeholder.com/400x300?text=Preview" alt="Preview" class="h-48 w-full object-cover object-center bg-gray-100">
-                        <div class="p-3">
-                            <h2 class="text-xl font-semibold text-gray-900 text-center">Preview</h2>
-                        </div>
-                    </div>
+                <div id="imagePreview" class="mt-4 hidden w-64 mx-auto">
+                    <img id="previewImg" src="https://via.placeholder.com/400x300?text=Preview" alt="Preview" class="h-48 w-full object-cover rounded-xl shadow-md">
+                    <h2 class="text-center text-gray-900 font-semibold mt-2">Preview</h2>
                 </div>
 
                 <x-button type="submit" class="btn-black-orange mt-4 w-full">Simpan Mobil</x-button>
